@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>SpringCloud学习笔记（一）</title>
+    <url>/2020/06/01/SpringCloud%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="微服务基础知识"><a href="#微服务基础知识" class="headerlink" title="微服务基础知识"></a>微服务基础知识</h1><h2 id="1-系统架构的演变过程"><a href="#1-系统架构的演变过程" class="headerlink" title="1.系统架构的演变过程"></a>1.系统架构的演变过程</h2><blockquote>
+<p>1.1 单体应用架构<br>1.2 垂直应用架构<br>1.3 分布式SOA架构<br>1.4 微服务架构</p>
+</blockquote>
+<hr>
+<h2 id="2-分布式的核心"><a href="#2-分布式的核心" class="headerlink" title="2.分布式的核心"></a>2.分布式的核心</h2><p>在微服务架构中，通常都需要多个服务之间进行远程调用，远程调用包含两个部分：序列化和通信协议。常见的序列化协议包括JSON、XML、bytes等，目前主流的远程调用技术有基于HTTP的RestFul接口和基于TCP的RPC协议。</p>
+<p>*2.1 远程调用 *</p>
+<h4 id="RestFul接口"><a href="#RestFul接口" class="headerlink" title="RestFul接口"></a>RestFul接口</h4><h4 id="RPC-进程间通信的方式"><a href="#RPC-进程间通信的方式" class="headerlink" title="RPC - 进程间通信的方式"></a>RPC - 进程间通信的方式</h4><blockquote>
+<p>区别和联系</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">RestFul</th>
+<th align="center">RPC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">协议</td>
+<td align="center">HTTP</td>
+<td align="center">一般是TCP</td>
+</tr>
+<tr>
+<td align="center">性能</td>
+<td align="center">略低</td>
+<td align="center">高</td>
+</tr>
+<tr>
+<td align="center">灵活性</td>
+<td align="center">高</td>
+<td align="center">低</td>
+</tr>
+<tr>
+<td align="center">应用</td>
+<td align="center">微服务架构</td>
+<td align="center">SOA架构</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>分布式中的CAP原理</p>
+</blockquote>
+<p>A:可用性 - 保持服务可用，多节点<br>C:一致性 - 保证多节点的数据一致<br>P:分区容忍性 - 是否可以多个地方存储</p>
+<p>注：不可能同时满足C, A, P<br>AC: 放弃容忍，物理数据库<br>AP：可以短暂不一致， NoSql<br>CP：放弃可用性， zookeeper</p>
+<h2 id="3-常见的微服务框架"><a href="#3-常见的微服务框架" class="headerlink" title="3.常见的微服务框架"></a>3.常见的微服务框架</h2><blockquote>
+<p>SpringCloud<br>ServiceComb<br>ZeroC ICE</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>SpringCloud</category>
+      </categories>
+      <tags>
+        <tag>SpringCloud</tag>
+        <tag>微服务</tag>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/05/31/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+</search>
