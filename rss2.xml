@@ -9,7 +9,7 @@
     <atom:link href="//rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Mon, 01 Jun 2020 09:36:14 GMT</pubDate>
+    <pubDate>Mon, 01 Jun 2020 09:56:37 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -31,7 +31,8 @@
 
 2.分布式的核心
 在微服务架构中，通常都需要多个服务之间进行远程调用，远程调用包含两个部分：序列化和通信协议。常见的序列化协议包括JSON、XML、bytes等，目前主流的远程调用技术有基于HTTP的RestFul接口和基于TCP的RPC协议。
-* 2.1 远程调用 *
+
+*2.1 远程调用 *
 
 RestFul接口
 RPC - 进程间通信的方式
