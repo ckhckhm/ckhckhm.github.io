@@ -47,36 +47,5 @@ C:一致性 -
       <comments>https://blog.ckhun.co/2020/06/01/SpringCloud%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/#disqus_thread</comments>
     </item>
     
-    <item>
-      <title>Hello World</title>
-      <link>https://blog.ckhun.co/2020/05/31/hello-world/</link>
-      <guid>https://blog.ckhun.co/2020/05/31/hello-world/</guid>
-      <pubDate>Sun, 31 May 2020 12:29:46 GMT</pubDate>
-      <description>
-      
-        Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-
-Quick Start
-Create a new post
-1
-
-
-$ hexo new &quot;My New Post&quot;
-
-
-More info: Writing
-
-Run server
-1
-
-
-$ hexo s
-      
-      </description>
-      
-      
-      <comments>https://blog.ckhun.co/2020/05/31/hello-world/#disqus_thread</comments>
-    </item>
-    
   </channel>
 </rss>
