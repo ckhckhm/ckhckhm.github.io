@@ -9,7 +9,7 @@
     <atom:link href="//rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Tue, 02 Jun 2020 08:00:27 GMT</pubDate>
+    <pubDate>Tue, 02 Jun 2020 08:10:12 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -19,30 +19,7 @@
       <pubDate>Tue, 02 Jun 2020 06:21:22 GMT</pubDate>
       <description>
       
-        设置头像
-在主题配置文件下修改以下即可，支持cdn和本地文件
-
-1
-2
-3
-4
-5
-6
-7
-8
-
-
-# Sidebar Avatar
-avatar:
-  # Replace the default image and set the url here.
-  url: /images/avatar.jpg
-  # If true, the avatar will be dispalyed in circle.
-  rounded: true
-  # If true, the avatar will be rotated with the cursor.
-  rotated: false
-
-
-设置
+        这是一个Hexo-NexT7.x主题美化配置
       
       </description>
       

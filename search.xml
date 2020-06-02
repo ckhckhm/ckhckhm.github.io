@@ -3,7 +3,9 @@
   <entry>
     <title>Hexo-NexT主题美化配置</title>
     <url>/2020/06/02/Hexo-NexT%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="设置头像"><a href="#设置头像" class="headerlink" title="设置头像"></a>设置头像</h1><p>在主题配置文件下修改以下即可，支持cdn和本地文件</p>
+    <content><![CDATA[<a id="more"></a>
+
+<h1 id="设置头像"><a href="#设置头像" class="headerlink" title="设置头像"></a>设置头像</h1><p>在主题配置文件下修改以下即可，支持cdn和本地文件</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Sidebar Avatar</span></span><br><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="comment"># Replace the default image and set the url here.</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">/images/avatar.jpg</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be dispalyed in circle.</span></span><br><span class="line">  <span class="attr">rounded:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be rotated with the cursor.</span></span><br><span class="line">  <span class="attr">rotated:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
 <h1 id="设置底部不显示Powered-by-Hexo"><a href="#设置底部不显示Powered-by-Hexo" class="headerlink" title="设置底部不显示Powered by Hexo"></a>设置底部不显示Powered by Hexo</h1><p>在主题配置文件找到<code>footer</code>，修改以下即可</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Powered by Hexo &amp; NexT</span></span><br><span class="line"><span class="attr">powered:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
