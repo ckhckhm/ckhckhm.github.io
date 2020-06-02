@@ -9,7 +9,7 @@
     <atom:link href="//rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Tue, 02 Jun 2020 06:58:59 GMT</pubDate>
+    <pubDate>Tue, 02 Jun 2020 08:00:27 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -19,19 +19,8 @@
       <pubDate>Tue, 02 Jun 2020 06:21:22 GMT</pubDate>
       <description>
       
-        添加RSS
-实现效果
-
-具体实现方法
-切换到你的Hexo工程目录下，安装Hexo的插件
-
-1
-
-
-$ npm install hexo-generator-feed --save
-
-
-然后打开Hexo工程目录下的_config.yml, 在里面添加相应配置信息
+        设置头像
+在主题配置文件下修改以下即可，支持cdn和本地文件
 
 1
 2
@@ -41,22 +30,19 @@ $ npm install hexo-generator-feed --save
 6
 7
 8
-9
-10
-11
-12
-13
 
 
-# Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
-plugin:
-- hexo-generator-feed
+# Sidebar Avatar
+avatar:
+  # Replace the default image and set the url here.
+  url: /images/avatar.jpg
+  # If true, the avatar will be dispalyed in circle.
+  rounded: true
+  # If true, the avatar will be rotated with the cursor.
+  rotated: false
 
-# Feed/RSS
-feed:
-  t
+
+设置
       
       </description>
       

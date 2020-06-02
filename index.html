@@ -241,7 +241,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-06-02 14:21:22 / Modified: 14:58:59" itemprop="dateCreated datePublished" datetime="2020-06-02T14:21:22+08:00">2020-06-02</time>
+              <time title="Created: 2020-06-02 14:21:22 / Modified: 16:00:27" itemprop="dateCreated datePublished" datetime="2020-06-02T14:21:22+08:00">2020-06-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,14 +259,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.5k</span>
+              <span>5.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
+              <span>5 mins.</span>
             </span>
 
         </div>
@@ -278,19 +278,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          添加RSS
-实现效果
-
-具体实现方法
-切换到你的Hexo工程目录下，安装Hexo的插件
-
-1
-
-
-$ npm install hexo-generator-feed --save
-
-
-然后打开Hexo工程目录下的_config.yml, 在里面添加相应配置信息
+          设置头像
+在主题配置文件下修改以下即可，支持cdn和本地文件
 
 1
 2
@@ -300,22 +289,19 @@ $ npm install hexo-generator-feed --save
 6
 7
 8
-9
-10
-11
-12
-13
 
 
-# Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
-plugin:
-- hexo-generator-feed
+# Sidebar Avatar
+avatar:
+  # Replace the default image and set the url here.
+  url: /images/avatar.jpg
+  # If true, the avatar will be dispalyed in circle.
+  rounded: true
+  # If true, the avatar will be rotated with the cursor.
+  rotated: false
 
-# Feed/RSS
-feed:
-  t
+
+设置
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/06/02/Hexo-NexT%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96%E9%85%8D%E7%BD%AE/#more" rel="contents">
@@ -609,12 +595,12 @@ C:一致性 -
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="Symbols count total">2k</span>
+    <span title="Symbols count total">6k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2 mins.</span>
+    <span title="Reading time total">5 mins.</span>
 </div>
 
 <!--
