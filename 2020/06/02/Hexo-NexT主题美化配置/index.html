@@ -29,15 +29,15 @@
 <meta property="og:site_name" content="Rían&#39;s Notes">
 <meta property="og:description" content="添加RSS 实现效果  具体实现方法 切换到你的Hexo工程目录下，安装Hexo的插件  1   $ npm install hexo-generator-feed --save   然后打开Hexo工程目录下的_config.yml, 在里面添加相应配置信息  1 2 3 4 5 6 7 8 9 10 11 12 13   # Extensions ## Plugins: https:&#x2F;&#x2F;hex">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://blog.ckhun.co/.co//20200602022545437.png">
-<meta property="og:image" content="https://blog.ckhun.co/.co//20200602023644859.png">
+<meta property="og:image" content="https://blog.ckhun.co/images/20200602141722839/20200602022545437.png">
+<meta property="og:image" content="https://blog.ckhun.co/images/20200602141722839/20200602023644859.png">
 <meta property="article:published_time" content="2020-06-02T06:21:22.000Z">
-<meta property="article:modified_time" content="2020-06-02T06:42:27.350Z">
+<meta property="article:modified_time" content="2020-06-02T06:58:59.910Z">
 <meta property="article:author" content="Rían">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="NexT">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.ckhun.co/.co//20200602022545437.png">
+<meta name="twitter:image" content="https://blog.ckhun.co/images/20200602141722839/20200602022545437.png">
 
 <link rel="canonical" href="https://blog.ckhun.co/2020/06/02/Hexo-NexT%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96%E9%85%8D%E7%BD%AE/">
 
@@ -250,7 +250,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-06-02 14:21:22 / Modified: 14:42:27" itemprop="dateCreated datePublished" datetime="2020-06-02T14:21:22+08:00">2020-06-02</time>
+              <time title="Created: 2020-06-02 14:21:22 / Modified: 14:58:59" itemprop="dateCreated datePublished" datetime="2020-06-02T14:21:22+08:00">2020-06-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -294,7 +294,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="添加RSS"><a href="#添加RSS" class="headerlink" title="添加RSS"></a>添加RSS</h1><p><strong>实现效果</strong><br><img src="/.co//20200602022545437.png" alt><br><strong>具体实现方法</strong><br>切换到你的Hexo工程目录下，安装Hexo的插件</p>
+        <h1 id="添加RSS"><a href="#添加RSS" class="headerlink" title="添加RSS"></a>添加RSS</h1><p><strong>实现效果</strong><br><img src="../../../../../images/20200602141722839/20200602022545437.png" alt="images"><br><strong>具体实现方法</strong><br>切换到你的Hexo工程目录下，安装Hexo的插件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-generator-feed --save</span><br></pre></td></tr></table></figure>
 <p>然后打开Hexo工程目录下的<code>_config.yml</code>, 在里面添加相应配置信息</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">plugin:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">hexo-generator-feed</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Feed/RSS</span></span><br><span class="line"><span class="attr">feed:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">rss2</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">/rss2.xml</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">20</span></span><br><span class="line">  <span class="attr">hub:</span></span><br><span class="line">  <span class="attr">content:</span></span><br></pre></td></tr></table></figure>
@@ -304,7 +304,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
 <p>注意：如果不生效，可以去NexT主题<code>/themes/next/layout/_partials/sidebarsite-overview.swig</code>添加一下配置信息</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if theme.rss %&#125;</span><br><span class="line">   &lt;div class&#x3D;&quot;feed-link motion-element&quot;&gt;</span><br><span class="line">     &lt;a href&#x3D;&quot;&#123;&#123; url_for(theme.rss) &#125;&#125;&quot; rel&#x3D;&quot;alternate&quot;&gt;</span><br><span class="line">       &lt;i class&#x3D;&quot;fa fa-rss&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">       RSS</span><br><span class="line">     &lt;&#x2F;a&gt;</span><br><span class="line">   &lt;&#x2F;div&gt;</span><br><span class="line"> &#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/.co//20200602023644859.png" alt><br>如果需要配置样式，到<code>/themes/next/css/_common/outline/sidebar/</code>创建<code>sidebar-feed-link.styl</code>文件，添加以下信息：</p>
+<p><img src="../../../../../images/20200602141722839/20200602023644859.png" alt="images"><br>如果需要配置样式，到<code>/themes/next/css/_common/outline/sidebar/</code>创建<code>sidebar-feed-link.styl</code>文件，添加以下信息：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">.site-state &#123;</span><br><span class="line">  display: flex;</span><br><span class="line">  justify-content: center;</span><br><span class="line">  line-height: 1.4;</span><br><span class="line">  margin-top: 10px;</span><br><span class="line">  overflow: hidden;</span><br><span class="line">  text-align: center;</span><br><span class="line">  white-space: nowrap;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.site-state-item &#123;</span><br><span class="line">  padding: 0 15px;</span><br><span class="line"></span><br><span class="line">  &amp;:not(:first-child) &#123;</span><br><span class="line">    border-left: 1px solid $site-state-item-border-color;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  a &#123;</span><br><span class="line">    border-bottom: none;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.site-state-item-count &#123;</span><br><span class="line">  display: block;</span><br><span class="line">  font-size: $site-state-item-count-font-size;</span><br><span class="line">  font-weight: 600;</span><br><span class="line">  text-align: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.site-state-item-name &#123;</span><br><span class="line">  color: $site-state-item-name-color;</span><br><span class="line">  font-size: $site-state-item-name-font-size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>配置好即可，如果需要更加DIY，可以自行修改。<br>重新生成运行就生效了</p>
 
