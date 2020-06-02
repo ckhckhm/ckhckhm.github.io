@@ -9,20 +9,59 @@
     <atom:link href="//rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Tue, 02 Jun 2020 06:15:38 GMT</pubDate>
+    <pubDate>Tue, 02 Jun 2020 06:42:27 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
-      <title>Hexo + NexT 7.x主题配置</title>
-      <link>https://blog.ckhun.co/2020/06/02/Hexo-NexT-7-x%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/</link>
-      <guid>https://blog.ckhun.co/2020/06/02/Hexo-NexT-7-x%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/</guid>
-      <pubDate>Tue, 02 Jun 2020 06:07:43 GMT</pubDate>
+      <title>Hexo-NexT主题美化配置</title>
+      <link>https://blog.ckhun.co/2020/06/02/Hexo-NexT%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96%E9%85%8D%E7%BD%AE/</link>
+      <guid>https://blog.ckhun.co/2020/06/02/Hexo-NexT%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96%E9%85%8D%E7%BD%AE/</guid>
+      <pubDate>Tue, 02 Jun 2020 06:21:22 GMT</pubDate>
       <description>
+      
+        添加RSS
+实现效果
+
+具体实现方法
+切换到你的Hexo工程目录下，安装Hexo的插件
+
+1
+
+
+$ npm install hexo-generator-feed --save
+
+
+然后打开Hexo工程目录下的_config.yml, 在里面添加相应配置信息
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+plugin:
+- hexo-generator-feed
+
+# Feed/RSS
+feed:
+  t
       
       </description>
       
       
-      <comments>https://blog.ckhun.co/2020/06/02/Hexo-NexT-7-x%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/#disqus_thread</comments>
+      <comments>https://blog.ckhun.co/2020/06/02/Hexo-NexT%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96%E9%85%8D%E7%BD%AE/#disqus_thread</comments>
     </item>
     
     <item>

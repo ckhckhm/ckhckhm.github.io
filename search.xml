@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo + NexT 7.x主题配置</title>
-    <url>/2020/06/02/Hexo-NexT-7-x%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[]]></content>
+    <title>Hexo-NexT主题美化配置</title>
+    <url>/2020/06/02/Hexo-NexT%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="添加RSS"><a href="#添加RSS" class="headerlink" title="添加RSS"></a>添加RSS</h1><p><strong>实现效果</strong><br><img src="/.co//20200602022545437.png" alt><br><strong>具体实现方法</strong><br>切换到你的Hexo工程目录下，安装Hexo的插件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-generator-feed --save</span><br></pre></td></tr></table></figure>
+<p>然后打开Hexo工程目录下的<code>_config.yml</code>, 在里面添加相应配置信息</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">plugin:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">hexo-generator-feed</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Feed/RSS</span></span><br><span class="line"><span class="attr">feed:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">rss2</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">/rss2.xml</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">20</span></span><br><span class="line">  <span class="attr">hub:</span></span><br><span class="line">  <span class="attr">content:</span></span><br></pre></td></tr></table></figure>
+<p>然后进入NexT主题文件中的<code>_config.yml</code>，在里面添加配置如下：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">rss:</span> <span class="string">rss2.xml</span></span><br></pre></td></tr></table></figure>
+<p>配置完成后运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
+<p>注意：如果不生效，可以去NexT主题<code>/themes/next/layout/_partials/sidebarsite-overview.swig</code>添加一下配置信息</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if theme.rss %&#125;</span><br><span class="line">   &lt;div class&#x3D;&quot;feed-link motion-element&quot;&gt;</span><br><span class="line">     &lt;a href&#x3D;&quot;&#123;&#123; url_for(theme.rss) &#125;&#125;&quot; rel&#x3D;&quot;alternate&quot;&gt;</span><br><span class="line">       &lt;i class&#x3D;&quot;fa fa-rss&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">       RSS</span><br><span class="line">     &lt;&#x2F;a&gt;</span><br><span class="line">   &lt;&#x2F;div&gt;</span><br><span class="line"> &#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/.co//20200602023644859.png" alt><br>如果需要配置样式，到<code>/themes/next/css/_common/outline/sidebar/</code>创建<code>sidebar-feed-link.styl</code>文件，添加以下信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.site-state &#123;</span><br><span class="line">  display: flex;</span><br><span class="line">  justify-content: center;</span><br><span class="line">  line-height: 1.4;</span><br><span class="line">  margin-top: 10px;</span><br><span class="line">  overflow: hidden;</span><br><span class="line">  text-align: center;</span><br><span class="line">  white-space: nowrap;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.site-state-item &#123;</span><br><span class="line">  padding: 0 15px;</span><br><span class="line"></span><br><span class="line">  &amp;:not(:first-child) &#123;</span><br><span class="line">    border-left: 1px solid $site-state-item-border-color;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  a &#123;</span><br><span class="line">    border-bottom: none;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.site-state-item-count &#123;</span><br><span class="line">  display: block;</span><br><span class="line">  font-size: $site-state-item-count-font-size;</span><br><span class="line">  font-weight: 600;</span><br><span class="line">  text-align: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.site-state-item-name &#123;</span><br><span class="line">  color: $site-state-item-name-color;</span><br><span class="line">  font-size: $site-state-item-name-font-size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置好即可，如果需要更加DIY，可以自行修改。<br>重新生成运行就生效了</p>
+]]></content>
       <categories>
         <category>Hexo</category>
       </categories>
