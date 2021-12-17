@@ -9,8 +9,55 @@
     <atom:link href="//rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Tue, 02 Jun 2020 09:57:27 GMT</pubDate>
+    <pubDate>Fri, 17 Dec 2021 15:52:04 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>kubernetes初体验 --- 基于arm架构的CentOS7.x部署</title>
+      <link>https://www.ckhun.co/2021/12/17/kubernetes%E5%88%9D%E4%BD%93%E9%AA%8C%EF%BC%88%E4%B8%80%EF%BC%89/</link>
+      <guid>https://www.ckhun.co/2021/12/17/kubernetes%E5%88%9D%E4%BD%93%E9%AA%8C%EF%BC%88%E4%B8%80%EF%BC%89/</guid>
+      <pubDate>Fri, 17 Dec 2021 15:11:44 GMT</pubDate>
+      <description>
+      
+        设置主机名称
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+
+#查看Linux内核的版本
+uname -r
+4.18.0-80.7.2.el7.aarch64
+
+或者使用 uname -a
+Linux kc-linux 4.18.0-80.7.2.el7.aarch64 #1 SMP Thu Sep 12 16:13:20 UTC 2019 aarch64 aarch64 aarch64 GNU/Linux
+
+#如需要修改主机名称
+vim /etc/hostname
+
+
+配置k8s的源
+1
+2
+3
+4
+5
+6
+
+
+cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo
+      
+      </description>
+      
+      
+      <comments>https://www.ckhun.co/2021/12/17/kubernetes%E5%88%9D%E4%BD%93%E9%AA%8C%EF%BC%88%E4%B8%80%EF%BC%89/#disqus_thread</comments>
+    </item>
     
     <item>
       <title>Hexo-NexT主题美化配置</title>

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ckhun.co","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="设置主机名称 1 2 3 4 5 6 7 8 9   #查看Linux内核的版本 uname -r 4.18.0-80.7.2.el7.aarch64  或者使用 uname -a Linux kc-linux 4.18.0-80.7.2.el7.aarch64 #1 SMP Thu Sep 12 16:13:20 UTC 2019 aarch64 aarch64 aarch64 GNU&#x2F;Linu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kubernetes初体验 --- 基于arm架构的CentOS7.x部署">
+<meta property="og:url" content="https://www.ckhun.co/2021/12/17/kubernetes%E5%88%9D%E4%BD%93%E9%AA%8C%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="Rían&#39;s Notes">
+<meta property="og:description" content="设置主机名称 1 2 3 4 5 6 7 8 9   #查看Linux内核的版本 uname -r 4.18.0-80.7.2.el7.aarch64  或者使用 uname -a Linux kc-linux 4.18.0-80.7.2.el7.aarch64 #1 SMP Thu Sep 12 16:13:20 UTC 2019 aarch64 aarch64 aarch64 GNU&#x2F;Linu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-17T15:11:44.000Z">
+<meta property="article:modified_time" content="2021-12-17T15:52:04.011Z">
+<meta property="article:author" content="Rían">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="云原生">
+<meta property="article:tag" content="集群">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.ckhun.co/2021/12/17/kubernetes%E5%88%9D%E4%BD%93%E9%AA%8C%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>kubernetes初体验 --- 基于arm架构的CentOS7.x部署 | Rían's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/rss2.xml" title="Rían's Notes" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Rían's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Technical notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fa fa-fw fa-object-group"></i>Message Board</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://www.ckhun.co/2021/12/17/kubernetes%E5%88%9D%E4%BD%93%E9%AA%8C%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Rían">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rían's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          kubernetes初体验 --- 基于arm架构的CentOS7.x部署
+        </h1>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-17 23:11:44 / Modified: 23:52:04" itemprop="dateCreated datePublished" datetime="2021-12-17T23:11:44+08:00">2021-12-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kubernetes/" itemprop="url" rel="index"><span itemprop="name">kubernetes</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>8.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+
+<h2 id="设置主机名称"><a href="#设置主机名称" class="headerlink" title="设置主机名称"></a>设置主机名称</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看Linux内核的版本</span></span><br><span class="line">uname -r</span><br><span class="line">4.18.0-80.7.2.el7.aarch64</span><br><span class="line"></span><br><span class="line">或者使用 uname -a</span><br><span class="line">Linux kc-linux 4.18.0-80.7.2.el7.aarch64 #1 SMP Thu Sep 12 16:13:20 UTC 2019 aarch64 aarch64 aarch64 GNU/Linux</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">如需要修改主机名称</span></span><br><span class="line">vim /etc/hostname</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="配置k8s的源"><a href="#配置k8s的源" class="headerlink" title="配置k8s的源"></a>配置k8s的源</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=kubernetes</span><br><span class="line">baseurl=https://mirrors.tuna.tsinghua.edu.cn/kubernetes/yum/repos/kubernetes-el7-$basearch</span><br><span class="line">enabled=1</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">清除缓存</span></span><br><span class="line">yum clean all</span><br><span class="line"></span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><p><strong>docker的版本需要和kubectl的大版本一致</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">列出kubectl可用的版本信息</span></span><br><span class="line">yum list kubectl --showduplicates | sort -r</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">列出信息如下:</span></span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">Loaded plugins: fastestmirror</span><br><span class="line">kubectl.aarch64                      1.9.9-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.8-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.7-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.6-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.5-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.4-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.3-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.2-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.11-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.1-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.10-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.9.0-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.9-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.8-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.7-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.6-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.5-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.4-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.3-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.2-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.15-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.14-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.13-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.12-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.11-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.1-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.10-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.8.0-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.9-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.8-1                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.7-1                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.6-1                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.5-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.4-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.3-1                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.2-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.16-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.15-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.14-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.11-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.1-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.10-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.7.0-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.9-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.8-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.7-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.6-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.5-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.4-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.3-0                         kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.13-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.12-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.11-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.6.10-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.23.0-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.22.4-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.22.3-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.22.2-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.22.1-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.22.0-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.21.8-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.21.7-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.21.6-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.21.5-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.21.4-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.21.3-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.21.2-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.21.1-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.21.0-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.9-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.8-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.7-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.6-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.5-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.4-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.2-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.14-0                       kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.13-0                       kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.12-0                       kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.11-0                       kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.1-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.10-0                       kubernetes</span><br><span class="line">kubectl.aarch64                      1.20.0-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.19.9-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.19.8-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.19.7-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.19.6-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.19.5-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.19.4-0                        kubernetes</span><br><span class="line">kubectl.aarch64                      1.19.3-0                        kubernetes</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>这里选择1.19.3的版本进行安装，那么安装的docker对应版本</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">yum list docker-ce --showduplicates | sort -r</span><br><span class="line"><span class="meta">#</span><span class="bash">输出一下信息</span></span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">Loaded plugins: fastestmirror</span><br><span class="line">docker-ce.aarch64           3:20.10.9-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.8-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.7-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.6-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.5-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.4-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.3-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.2-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.1-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.12-3.el7                   docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.11-3.el7                   docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.10-3.el7                   docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:20.10.0-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.9-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.9-3.el7                    @docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.8-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.7-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.6-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.5-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.4-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.3-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.2-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.15-3.el7                   docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.14-3.el7                   docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.1-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.13-3.el7                   docker-ce-stable</span><br><span class="line">docker-ce.aarch64           3:19.03.12-3.el7                   docker-ce-stable</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">安装指定版本的docker</span></span><br><span class="line">sudo yum install docker-ce-19.03.9 docker-ce-cli-19.03.9 containerd.io</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">启动docker</span></span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">验证docker</span></span><br><span class="line">docker version</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">输出以下信息</span></span><br><span class="line">Client: Docker Engine - Community</span><br><span class="line"> Version:           19.03.9</span><br><span class="line"> API version:       1.40</span><br><span class="line"> Go version:        go1.13.10</span><br><span class="line"> Git commit:        9d98839</span><br><span class="line"> Built:             Fri May 15 00:25:47 2020</span><br><span class="line"> OS/Arch:           linux/arm64</span><br><span class="line"> Experimental:      false</span><br><span class="line"></span><br><span class="line">Server: Docker Engine - Community</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          19.03.9</span><br><span class="line">  API version:      1.40 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.13.10</span><br><span class="line">  Git commit:       9d98839</span><br><span class="line">  Built:            Fri May 15 00:24:27 2020</span><br><span class="line">  OS/Arch:          linux/arm64</span><br><span class="line">  Experimental:     false</span><br><span class="line"> containerd:</span><br><span class="line">  Version:          1.4.12</span><br><span class="line">  GitCommit:        7b11cfaabd73bb80907dd23182b9347b4245eb5d</span><br><span class="line"> runc:</span><br><span class="line">  Version:          1.0.2</span><br><span class="line">  GitCommit:        v1.0.2-0-g52b36a2</span><br><span class="line"> docker-init:</span><br><span class="line">  Version:          0.18.0</span><br><span class="line">  GitCommit:        fec3683</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="配置iptables"><a href="#配置iptables" class="headerlink" title="配置iptables"></a>配置iptables</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt;  /etc/sysctl.d/k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">vm.swappiness=0</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">让上述配置命令生效</span></span><br><span class="line">sysctl --system</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">如果执行出现：</span></span><br><span class="line">sysctl: cannot stat /proc/sys/net/bridge/bridge-nf-call-ip6tables: No such file or directory</span><br><span class="line">sysctl: cannot stat /proc/sys/net/bridge/bridge-nf-call-iptables: No such file or directory</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">解决方法：</span></span><br><span class="line">modprobe br_netfilter</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">然后再执行</span></span><br><span class="line">sysctl --system</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">输出的都是1</span></span><br><span class="line">cat /proc/sys/net/bridge/bridge-nf-call-ip6tables</span><br><span class="line">cat /proc/sys/net/bridge/bridge-nf-call-iptables</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="安装kubelet-kubeadm-kubectl"><a href="#安装kubelet-kubeadm-kubectl" class="headerlink" title="安装kubelet, kubeadm, kubectl"></a>安装kubelet, kubeadm, kubectl</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">安装最新版本,也可安装指定版本</span></span><br><span class="line">yum install -y kubelet kubeadm kubectl</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">安装指定版本的kubelet,kubeadm,kubectl</span></span><br><span class="line">yum install -y kubelet-1.19.3-0 kubeadm-1.19.3-0 kubectl-1.19.3-0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">查看kubelet版本</span></span><br><span class="line">kubelet --version</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">信息如下：</span></span><br><span class="line">Kubernetes v1.19.3</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">查看kubeadm版本</span></span><br><span class="line">kubeadm version</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">版本信息：</span></span><br><span class="line">kubeadm version: &amp;version.Info&#123;Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCommit:"1e11e4a2108024935ecfcb2912226cedeafd99df", GitTreeState:"clean", BuildDate:"2020-10-14T12:47:53Z", GoVersion:"go1.15.2", Compiler:"gc", Platform:"linux/arm64"&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="启动并把上面的服务加入自启"><a href="#启动并把上面的服务加入自启" class="headerlink" title="启动并把上面的服务加入自启"></a>启动并把上面的服务加入自启</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">重新加载配置文件</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">启动kubelet</span></span><br><span class="line">systemctl start kubelet</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">设置开机自启</span></span><br><span class="line">systemctl enable kubelet</span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="kubeadm工具简介"><a href="#kubeadm工具简介" class="headerlink" title="kubeadm工具简介"></a>kubeadm工具简介</h2><p><a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/" target="_blank" rel="noopener">Kubeadm</a>是一个提供了 <code>[kubeadm init]</code> 和 <code>[kubeadm join]</code> 的工具， 作为创建 <a href="https://kubernetes.io/docs/home/" target="_blank" rel="noopener">Kubernetes </a>集群的 “快捷途径” 的最佳实践。</p>
+<h2 id="初始化k8s集群Master"><a href="#初始化k8s集群Master" class="headerlink" title="初始化k8s集群Master"></a>初始化k8s集群Master</h2><p><strong><em>命令简介：</em></strong></p>
+<ul>
+<li><code>--image-repository string</code> : 默认是 “k8s.gcr.io”。设置用于拉取镜像的容器仓库，国内的话需要更换国内的源，不然不可以直接下载镜像，以下已经替换了阿里云的源。</li>
+<li><code>--apiserver-advertise-address string</code>：API服务器监听的IP地址，如果未设置，则使用默认网络接口。这里设置的地址需要是服务器的内网地址，如果是外网的IP地址可能存在一些问题。</li>
+<li><code>--kubernetes-version string</code>：选择一个Kubernetes的版本，默认是 “stable-1”。</li>
+<li><code>--pod-network-cidr string</code>： 指明 pod 网络可以使用的 IP 地址段。</li>
+<li><code>--service-cidr string</code>：默认值为：”10.96.0.0/12”，为服务的虚拟IP地址另外制定IP地址段</li>
+<li>其余参数参考<a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/" target="_blank" rel="noopener">kubeadm init</a></li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --image-repository registry.aliyuncs.com/google_containers --apiserver-advertise-address=192.168.0.58 --kubernetes-version=v1.19.3 --pod-network-cidr=10.244.0.0/16 --service-cidr=10.1.0.0/16</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 打印信息如下：</span></span><br><span class="line">...</span><br><span class="line">our Kubernetes control-plane has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  mkdir -p $HOME/.kube</span><br><span class="line">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">  sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:</span><br><span class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"></span><br><span class="line">Then you can join any number of worker nodes by running the following on each as root:</span><br><span class="line"></span><br><span class="line">kubeadm join 192.168.0.58:6443 --token r5rf22.ptjljxjlipt.....hyo \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:3e69484.....a6e93d170a02</span><br></pre></td></tr></table></figure></div>
+
+<p><strong><a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-join/" target="_blank" rel="noopener">kubeadm join</a> 此命令用来初始化 Kubernetes 工作节点并将其加入集群</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="安装flannel"><a href="#安装flannel" class="headerlink" title="安装flannel"></a>安装flannel</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建文件夹</span></span><br><span class="line">mkdir flannel &amp;&amp; cd flannel</span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载文件</span></span><br><span class="line">curl -O https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">创建flannel网络插件</span></span><br><span class="line">kubectl apply -f kube-flannel.yml</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="查看集群节点"><a href="#查看集群节点" class="headerlink" title="查看集群节点"></a>查看集群节点</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看节点</span></span><br><span class="line">kubectl get node</span><br><span class="line">NAME        STATUS   ROLES    AGE   VERSION</span><br><span class="line">kc-linux   Ready    master   4m38s   v1.19.3</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="将节点添加到k8s集群中"><a href="#将节点添加到k8s集群中" class="headerlink" title="将节点添加到k8s集群中"></a>将节点添加到k8s集群中</h2><p><strong>参考上面在节点上安装好docker, kubelet, kubectl, kubeadm, 然后执行初始化输出的 kubeadm join….</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 节点加入成功后，在master上查看</span></span><br><span class="line">kubectl get node</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+      
+<div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Rían
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://www.ckhun.co/2021/12/17/kubernetes%E5%88%9D%E4%BD%93%E9%AA%8C%EF%BC%88%E4%B8%80%EF%BC%89/" title="kubernetes初体验 --- 基于arm架构的CentOS7.x部署">https://www.ckhun.co/2021/12/17/kubernetes初体验（一）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+              <a href="/tags/kubernetes/" rel="tag"><i class="fa fa-tag"></i> kubernetes</a>
+              <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/" rel="tag"><i class="fa fa-tag"></i> 云原生</a>
+              <a href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag"><i class="fa fa-tag"></i> 集群</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/02/Hexo-NexT%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96%E9%85%8D%E7%BD%AE/" rel="prev" title="Hexo-NexT主题美化配置">
+      <i class="fa fa-chevron-left"></i> Hexo-NexT主题美化配置
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MDMyOS8yNjgxOQ=="></div>
+  </div>
+  
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设置主机名称"><span class="nav-number">1.</span> <span class="nav-text">设置主机名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置k8s的源"><span class="nav-number">2.</span> <span class="nav-text">配置k8s的源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装docker"><span class="nav-number">3.</span> <span class="nav-text">安装docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置iptables"><span class="nav-number">4.</span> <span class="nav-text">配置iptables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装kubelet-kubeadm-kubectl"><span class="nav-number">5.</span> <span class="nav-text">安装kubelet, kubeadm, kubectl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动并把上面的服务加入自启"><span class="nav-number">6.</span> <span class="nav-text">启动并把上面的服务加入自启</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kubeadm工具简介"><span class="nav-number">7.</span> <span class="nav-text">kubeadm工具简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化k8s集群Master"><span class="nav-number">8.</span> <span class="nav-text">初始化k8s集群Master</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装flannel"><span class="nav-number">9.</span> <span class="nav-text">安装flannel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看集群节点"><span class="nav-number">10.</span> <span class="nav-text">查看集群节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将节点添加到k8s集群中"><span class="nav-number">11.</span> <span class="nav-text">将节点添加到k8s集群中</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Rían"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Rían</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+   <div class="feed-link motion-element">
+     <a href="/rss2.xml" rel="alternate">
+       <i class="fa fa-rss"></i>
+       RSS
+     </a>
+   </div>
+ 
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ckhckhm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ckhckhm" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ckhckh85@gmail.com" title="E-Mail → mailto:ckhckh85@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.google.com/" title="https:&#x2F;&#x2F;www.google.com&#x2F;" rel="noopener" target="_blank">Google</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.bing.com/" title="https:&#x2F;&#x2F;www.bing.com&#x2F;" rel="noopener" target="_blank">Bing</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://duckduckgo.com/" title="https:&#x2F;&#x2F;duckduckgo.com&#x2F;" rel="noopener" target="_blank">DuckDuckGo</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备18139757号-1 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44011702000416" rel="noopener" target="_blank">粤公网安备 44011702000416号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rían</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="Symbols count total">15k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">13 mins.</span>
+</div>
+
+<!--
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-ribbon@1/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook,Linkedin,Mailto,Reddit,GooglePlus";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
